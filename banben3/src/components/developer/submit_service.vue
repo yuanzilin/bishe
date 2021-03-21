@@ -65,20 +65,19 @@ export default {
       this.$emit('hideDialog')
       $this.$emit('submitSuccess',this.submitType)
       this.dialogFormVisible = false
-      console.log(85858585,this.submitType)
       let param = new URLSearchParams()
-      console.log(9494949494,window.localStorage["username"])
       param.append('developer',window.localStorage["username"])
       param.append('service_name',this.form.servicename)
       param.append('type',this.submitType)
-      param.append('service_file',this.servicePath)
-      console.log("707070707070",param)
+      param.append('service_file',this.form.servicePath)
+
+      console.log("707070707070",param.get('service_file'))
       this.$axios({
         method: "POST",
         url: "/service/submit",
         data: param
       }).then(function(response){
-        console.log(94994949494949,response)
+        console.log("80,submit_service",response)
         $this.$emit('getServiceData')
       }).catch(function(error){
         console.log(error)

@@ -65,9 +65,8 @@ export default {
       let $this=this
       this.$emit('hideDialog')
       this.dialogFormVisible = false
-      console.log(85858585,this.submitType)
       let param = new URLSearchParams()
-      console.log(9494949494,window.localStorage["username"])
+      console.log("submit_tool.vue",window.localStorage["username"])
       param.append('tool_uploader',window.localStorage["username"])
       param.append('toolname',this.form.toolname)
       param.append('toolpath',this.form.toolPath)
@@ -77,7 +76,7 @@ export default {
         url: "/tool/submit",
         data: param
       }).then(function(response){
-        console.log(94994949494949,response)
+        console.log("79,submit_tool.vue",response)
         $this.$emit('submitSuccess')
       }).catch(function(error){
         console.log(error)

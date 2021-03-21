@@ -18,13 +18,22 @@
           </el-select>
         </el-form-item>
 
+        <el-form-item label="运行时间上限" :label-width="formLabelWidth">
+          <el-select v-model="form.timeout" @visible-change="getServiceData" placeholder="请选择" size=medium @change="handleChange">
+            <el-option
+                v-for="item in timeout"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="任务名称" :label-width="formLabelWidth">
           <el-input v-model="form.problemname" autocomplete="off" placeholder="不超过10个字"></el-input>
         </el-form-item>
 
-        <el-form-item label="运行时间上限" :label-width="formLabelWidth">
-          <el-input v-model="form.timeout" autocomplete="off" placeholder="以s为单位"></el-input>
-        </el-form-item>
+
 
         <el-upload
             class="upload-demo"
@@ -83,6 +92,18 @@ export default {
   data(){
     return{
       options:[],
+      timeout:[
+        {
+          value:'1',
+          label:'1s'
+        }, {
+          value:'2',
+          label:'10s'
+        }, {
+          value:'3',
+          label:'50s'
+        }
+      ],
       form: {
         subtype: '',
         problemname: '',
@@ -130,9 +151,7 @@ export default {
       this.$emit('hideDialog')
       $this.$emit('submitSuccess',this.submitType)
       this.dialogFormVisible = false
-      console.log(85858585,this.submitType)
       let param = new URLSearchParams()
-      console.log(9494949494,window.localStorage["username"])
       param.append('username',window.localStorage["username"])
       param.append('problemName',this.form.problemname)
       param.append('timeout',this.form.timeout)
@@ -145,7 +164,7 @@ export default {
         url: "/submitForm",
         data: param
       }).then(function(response){
-        console.log(94994949494949,response)
+        console.log("SubmitFrame.vue",response)
       }).catch(function(error){
         console.log(error)
       })
