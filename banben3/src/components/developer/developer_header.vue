@@ -23,7 +23,16 @@
         >
           登出
         </i-button>
+        <i-button
+            shape="circle"
+            @click="log_off"
+            id="logoff"
+        >
+          注销
+        </i-button>
       </div>
+
+      <LogOff :user_type="userType" :dialog-form-visible="log_offVisible" @closeLogOut="closeLogOut"></LogOff>
 
       <!--      </template>-->
     </Menu>
@@ -38,6 +47,7 @@
 import SubmitFrame from "@/components/SubmitFrame";
 import toolTable from "@/components/developer/toolTable";
 import ServiceTable from "@/components/developer/ServiceTable";
+import LogOff from "@/components/LogOff";
 // import AnalyseService from "@/components/developer/AnalyseService";
 // import ValidateService from "@/components/developer/ValidateService";
 // import TestService from "@/components/developer/TestService";
@@ -47,12 +57,15 @@ export default {
     SubmitFrame,
     toolTable,
     ServiceTable,
+    LogOff,
     // AnalyseService,
     // ValidateService,
     // TestService,
   },
   data () {
     return {
+      userType:'developer',
+      log_offVisible:false,
       myComponent:toolTable,
       now_username: window.localStorage["username"],
       theme1: 'light',
@@ -62,6 +75,12 @@ export default {
     }
   },
   methods: {
+    log_off(){
+      this.log_offVisible=true
+    },
+    closeLogOut() {
+      this.log_offVisible=false
+    },
     handleRoute(name){
       this.myComponent=name
       console.log(7474747474,this.myComponent)
@@ -134,6 +153,11 @@ export default {
   margin-right: 20px;
   margin-left: 20px;
 
+}
+
+#logoff{
+  display:inline-block;
+  margin-right: 10px;
 }
 
 #wel_lout{

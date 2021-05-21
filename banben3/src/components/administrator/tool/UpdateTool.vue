@@ -1,21 +1,13 @@
 <template>
   <div>
-    <el-dialog title="提交"
+    <el-dialog title="升级工具版本"
                :before-close="handleClose"
                :visible.sync="dialogFormVisible"
                :append-to-body="true" center>
       <el-form :model="form" ref="submitform">
 
-        <el-form-item label="工具名称" :label-width="formLabelWidth">
-          <el-input v-model="form.toolname" autocomplete="off" placeholder="请输入工具名称"></el-input>
-        </el-form-item>
-
-        <el-form-item label="版本号" :label-width="formLabelWidth">
+        <el-form-item label="输入新的版本号" :label-width="formLabelWidth">
           <el-input v-model="form.toolVersion" autocomplete="off" placeholder="不超过10个字"></el-input>
-        </el-form-item>
-
-        <el-form-item label="功能描述" :label-width="formLabelWidth">
-          <el-input v-model="form.toolDetail" autocomplete="off" placeholder="用不超过20个字说明本工具功能"></el-input>
         </el-form-item>
 
 
@@ -44,12 +36,16 @@
 
 <script>
 export default {
-  name: "submit_tool",
+  name: "UpdateTool",
   props:{
     dialogFormVisible:{
       type: Boolean,
       default: false
     },
+    updateID:{
+      type:Number,
+      default: -1
+    }
   },
   data(){
     return{
@@ -58,41 +54,32 @@ export default {
         toolname:'',
         toolPath:'',
         toolVersion:'',
-        toolDetail:'',
       },
       formLabelWidth: '120px',
       fileList:[],
     }
   },
   methods:{
-
-
     //提交表单数据
     onSubmit () {
       let $this=this
       this.$emit('hideDialog')
       this.dialogFormVisible = false
-      let param = new URLSearchParams()
-      console.log("submit_tool.vue",window.localStorage["username"])
-      param.append('tool_uploader',window.localStorage["username"])
-      param.append('toolname',this.form.toolname)
-      param.append('toolpath',this.form.toolPath)
-      param.append('toolversion',this.form.toolVersion)
-      param.append('toolDetail',this.form.toolDetail)
-      this.$axios({
-        method: "POST",
-        url: "/tool/submit",
-        data: param
+
+      this.$axios.post(this.$server+'/tool/updateTool',{
+        'id':this.updateID,
+        'toolpath':this.form.toolPath,
+        'version':this.form.toolVersion
       }).then(function(response){
-        console.log("79,submit_tool.vue",response)
-        $this.$emit('submitSuccess')
+        console.log("70,UpdateTool.vue",response)
+        $this.$emit('updateSuccess')
       }).catch(function(error){
         console.log(error)
       })
 
     },
     handleClose(){
-      this.$emit('hideDialog')
+      this.$emit('hideUpdate')
     },
     //
     uploadTool(){

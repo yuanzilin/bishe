@@ -20,8 +20,8 @@
 
         <el-form-item label="选择工具" :label-width="formLabelWidth">
           <el-checkbox-group
-            v-model="form.service_tool"
-            :max="10">
+              v-model="form.service_tool"
+              :max="10">
             <el-checkbox v-for="tool in toolList"  :label="tool.toolname" :key="tool.toolname">{{tool.toolname}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
@@ -51,7 +51,7 @@
 
 <script>
 export default {
-  name: "submit_service",
+  name: "submitServer",
   props:{
     dialogFormVisible:{
       type: Boolean,
@@ -102,7 +102,7 @@ export default {
     //提交表单数据
     onSubmit () {
       let $this=this
-      this.$emit('hideDialog')
+      this.$emit('hideSubmit')
       $this.$emit('submitSuccess',this.submitType)
       this.dialogFormVisible = false
       console.log("108108108,submit_service.vue,service_tool=",this.form.service_tool)
@@ -123,7 +123,7 @@ export default {
 
     },
     handleClose(){
-      this.$emit('hideDialog')
+      this.$emit('hideSubmit')
     },
     uploadZip(){
       return this.$server+'/service/upload_service'

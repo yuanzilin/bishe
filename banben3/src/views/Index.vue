@@ -2,9 +2,12 @@
 <div id="Index" >
 
   <Head @submitSuccess_h="submitSuccess_i"></Head>
-  <ProblemTable :flag_t="flag_t"></ProblemTable>
-  <ValidateTable :flag_t="flag_v"></ValidateTable>
-  <AnalyseTable :flag_t="flag_a"></AnalyseTable>
+  <!--  测试任务-->
+  <UserTaskTable :flag_t="flag_a" :table-type="testTable"></UserTaskTable>
+  <!--  验证任务-->
+  <UserTaskTable :flag_t="flag_a" :table-type="validateTable"></UserTaskTable>
+  <!--  分析任务-->
+  <UserTaskTable :flag_t="flag_a" :table-type="analyseTable"></UserTaskTable>
 
 </div>
 
@@ -48,16 +51,17 @@
 <script>
 
 import Head from '../components/Header.vue'
-import ProblemTable from "@/components/ProblemTable";
-import AnalyseTable from "@/components/AnalyseTable";
-import ValidateTable from "@/components/ValidateTable";
+import UserTaskTable from "@/components/UserTaskTable";
 export default {
   name:'index',
   data(){
     return{
       flag_t: false,
       flag_a: false,
-      flag_v: false
+      flag_v: false,
+      analyseTable:"分析任务",
+      testTable:"测试任务",
+      validateTable:"验证任务",
     }
   },
   mounted(){
@@ -73,21 +77,18 @@ export default {
     })
   },
   methods:{
-    submitSuccess_i(e){
-      console.log(66666666663333333333,"index",e)
-      // if(e=="test")
-        this.flag_t=!this.flag_t
-      // if(e=="validate")
-        this.flag_v=!this.flag_v
-      // if(e=="analyse")
-        this.flag_a=!this.flag_a
+    submitSuccess_i(){
+      console.log(66666666663333333333,"index")
+      this.flag_t=!this.flag_t
+      this.flag_v=!this.flag_v
+      this.flag_a=!this.flag_a
     }
   },
   components:{
     Head,
-    ProblemTable,
-    AnalyseTable,
-    ValidateTable,
+    // ProblemTable,
+    UserTaskTable,
+    // ValidateTable,
   }
 }
 </script>

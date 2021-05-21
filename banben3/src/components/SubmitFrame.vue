@@ -8,7 +8,7 @@
 
 <!--        在这里写一个选择框-->
         <el-form-item label="选择服务" :label-width="formLabelWidth">
-          <el-select v-model="form.subtype" @visible-change="getServiceData" placeholder="请选择" size=medium @change="handleChange">
+          <el-select v-model="subtype" @change="getServiceIntro" @visible-change="getServiceData" placeholder="请选择" size=medium >
             <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -18,13 +18,19 @@
           </el-select>
         </el-form-item>
 
+        <el-form-item label="该服务的说明" :label-width="formLabelWidth" :visible="introVisible">
+          <p style="white-space: pre-wrap">
+            {{service_intro}}
+          </p>
+        </el-form-item>
+
         <el-form-item label="运行时间上限" :label-width="formLabelWidth">
-          <el-select v-model="form.timeout" @visible-change="getServiceData" placeholder="请选择" size=medium @change="handleChange">
+          <el-select v-model="form.timeout" @visible-change="getServiceData" placeholder="请选择" size=medium >
             <el-option
                 v-for="item in timeout"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value">
+                :value="item.label">
             </el-option>
           </el-select>
         </el-form-item>
@@ -32,8 +38,6 @@
         <el-form-item label="任务名称" :label-width="formLabelWidth">
           <el-input v-model="form.problemname" autocomplete="off" placeholder="不超过10个字"></el-input>
         </el-form-item>
-
-
 
         <el-upload
             class="upload-demo"
@@ -46,7 +50,7 @@
             :limit="3"
             :file-list="fileList">
           <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">请上传项目文件或者压缩包</div>
+          <div slot="tip" class="el-upload__tip">请上传项目文件</div>
         </el-upload>
 
         <el-upload
@@ -91,21 +95,23 @@ export default {
   },
   data(){
     return{
+      introVisible:false,
+      service_intro:'',
       options:[],
       timeout:[
         {
           value:'1',
-          label:'1s'
+          label:'10s'
         }, {
           value:'2',
-          label:'10s'
+          label:'20s'
         }, {
           value:'3',
           label:'50s'
         }
       ],
+      subtype:'',
       form: {
-        subtype: '',
         problemname: '',
         timeout: '',
         Zips_path: '',
@@ -116,13 +122,24 @@ export default {
     }
   },
   watch:{
-    dialogFormVisible:{
-      handle(){
-        this.getServiceData()
-      }
+    dialogFormVisible(){
+      this.getServiceData()
     }
   },
   methods:{
+    getServiceIntro(){
+      this.introVisible=false
+      let $this=this
+      this.$axios.get(this.$server+'/service/getServiceIntro',{
+        params:{
+          'service_name':this.subtype
+        }
+      }).then(function (res){
+        console.log(res.data.data)
+        //用正则实现换行功能
+        $this.service_intro=res.data.data
+      })
+    },
     getServiceData(){
       console.log("108108108108,submitframe",this.submitType)
       let $this=this;
@@ -142,35 +159,60 @@ export default {
         console.log(error)
       })
     },
-    handleChange(){
-      this.$forceUpdate()
-    },
     //提交表单数据
     onSubmit () {
+      console.log("169169")
       let $this=this
-      this.$emit('hideDialog')
       $this.$emit('submitSuccess',this.submitType)
-      this.dialogFormVisible = false
-      let param = new URLSearchParams()
-      param.append('username',window.localStorage["username"])
-      param.append('problemName',this.form.problemname)
-      param.append('timeout',this.form.timeout)
-      param.append('type',this.submitType)
-      param.append('zip_path',this.form.Zips_path)
-      param.append('settings_path',this.form.Settings_path)
-      param.append('subtype',this.form.subtype)
-      this.$axios({
-        method: "POST",
-        url: "/submitForm",
-        data: param
+      let loading = this.$loading({
+        lock:true,
+        text:"提交中，请稍候...",
+
+        // spinner:"el-icon-loading",
+        background:'rgba(0,0,0,0.5)'
+      })
+      this.$axios.post(this.$server+'/submitForm',{
+        //用户名username
+        "username":window.localStorage["username"],
+        //任务名problemName
+        "problemName":this.form.problemname,
+        //运行上限timeout
+        "timeout":this.form.timeout,
+        //任务文件Zips_file
+        "Zips_file":this.form.Zips_path,
+        //服务配置文件？先把它写上去
+        "settings_path":this.form.Settings_path,
+        //服务的具体名称
+        "subtype":this.subtype,
+        //服务的分类
+        "type":this.submitType,
+
       }).then(function(response){
         console.log("SubmitFrame.vue",response)
+        $this.$emit('hideDialog')
+        loading.close()
+        $this.$message({
+          message:"提交成功",
+          type:"success"
+        })
+
+        //清空提交框的内容
+        $this.subtype=''
+        $this.service_intro=''
+        $this.form.timeout=''
+        $this.form.problemname=''
+        $this.fileList=[]
       }).catch(function(error){
         console.log(error)
       })
 
     },
     handleClose(){
+      this.subtype=''
+      this.service_intro=''
+      this.form.timeout=''
+      this.form.problemname=''
+      this.fileList=[]
       this.$emit('hideDialog')
     },
     uploadZip(){

@@ -175,7 +175,7 @@ export default {
                 // console.log("输出response.data.status", res.data.status);
                 if (res.data.code === 102) {
                   this.$message({
-                    message: "注册成功",
+                    message: "信息已提交，请等待管理员审核",
                     type: "success"
                   })
                   this.$router.push({ path: "/" });

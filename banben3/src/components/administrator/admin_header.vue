@@ -1,20 +1,20 @@
 <template>
   <div id="level1">
 
-    <Menu active-name="toolTable" mode="horizontal" :theme="theme1"  id="level2_menu"  @on-select="handleRoute">
-      <MenuItem name="task">
+    <Menu active-name="TaskTable" mode="horizontal" :theme="theme1"  id="level2_menu"  @on-select="handleRoute">
+      <MenuItem name="TaskMenu">
         <Icon type="ios-people" />
-        任务
+        任务列表
         <!--        -->
       </MenuItem>
 
-      <MenuItem name="user">
+      <MenuItem name="UserMenu">
         <Icon type="ios-people" />
         用户
         <!--        -->
       </MenuItem>
 
-      <MenuItem name="toolTable">
+      <MenuItem name="ToolTable">
         <Icon type="ios-people" />
         工具
         <!--        -->
@@ -22,12 +22,6 @@
       <MenuItem name="ServiceTable">
         <Icon type="ios-stats" />
         服务
-        <!--        -->
-      </MenuItem>
-
-      <MenuItem name="resource">
-        <Icon type="ios-stats" />
-        资源
         <!--        -->
       </MenuItem>
 
@@ -55,20 +49,26 @@
 <script>
 import SubmitFrame from "@/components/SubmitFrame";
 import toolTable from "@/components/developer/toolTable";
-import ServiceTable from "@/components/developer/ServiceTable";
+import ServiceTable from "@/components/administrator/service/ServiceTable";
+import TaskMenu from "@/components/administrator/task/TaskMenu";
+import ToolTable from "@/components/administrator/tool/ToolTable";
+import UserMenu from "@/components/administrator/user/UserMenu";
 export default {
   name: 'admin_header',
   components:{
     SubmitFrame,
     toolTable,
     ServiceTable,
+    TaskMenu,
+    ToolTable,
+    UserMenu,
     // AnalyseService,
     // ValidateService,
     // TestService,
   },
   data () {
     return {
-      myComponent:toolTable,
+      myComponent:TaskMenu,
       now_username: window.localStorage["username"],
       theme1: 'light',
       type:'',

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(name,value) in service" :key="value">
-      <ServiceTemplate :developer-i-d="$route.params.id" :type_name="name" :type_value="value" :user-type="userType"></ServiceTemplate>
+      <ServiceTemplate :type_name="name" :type_value="value" :user-type="2"></ServiceTemplate>
     </div>
   </div>
 
@@ -14,12 +14,10 @@ export default {
   components:{
     ServiceTemplate
   },
-
   data(){
     return{
       //怪事，用（name，value）遍历这个字典时，name显示的是后面的字眼，value显示的是冒号前面的字眼
       service:{"test":"测试","validate":"验证","analyse":"分析"},
-      userType:1,
     }
   }
 }

@@ -10,8 +10,8 @@
         <el-table-column prop="id" label="ID" width="180"></el-table-column>
         <el-table-column prop="toolname" label="名称" width="180"></el-table-column>
         <el-table-column prop="version" label="版本"></el-table-column>
-        <el-table-column prop="submit_time" label="提交时间"></el-table-column>
-        <el-table-column prop="manage" label="管理此工具"></el-table-column>
+        <el-table-column prop="toolDetail" label="功能描述"></el-table-column>
+<!--        <el-table-column prop="manage" label="管理此工具"></el-table-column>-->
       </el-table>
     </el-card>
   </div>
@@ -27,7 +27,8 @@ export default {
   data(){
     return{
       dialogVisible: false,
-      tableData:[]
+      tableData:[],
+
     }
   },
   created() {
@@ -41,7 +42,8 @@ export default {
       let $this=this;
       this.$axios.get(this.$server+'/tool/getdata',{
         params:{
-          'type': 1,
+          //type=2,说明是从开发者的角度去查询的
+          'type': 2,
           'dev_name':localStorage["username"],
         }
       }).then(function (response){

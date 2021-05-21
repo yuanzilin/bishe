@@ -96,7 +96,7 @@ export default {
       //可是一般来说可能希望在不同的组件中引用的时候，使用不同的值，所以这里要用return
       //这样在A组件和B组件分别引用这个变量的时候是不会互相影响的
       user: {
-        username: "yzl1",
+        username: "yzl",
         password: "1234",
         //为了登录方便，可以直接在这里写好用户名和密码的值
         type:'',
@@ -132,6 +132,7 @@ export default {
     },
     doLogin() {
       let $this=this
+      // alert(this.user.type)
       //一点击登录按钮，这个方法就会执行
       if (!this.user.username) {
         this.$message.error("请输入用户名！");
@@ -161,7 +162,7 @@ export default {
           this.$router.push("/"+$this.user.type+"index");
         } else {
           this.$message({
-            message: "用户名或密码错误",
+            message: res.data.detail,
             type: "error",
           });
         }

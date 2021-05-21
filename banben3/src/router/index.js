@@ -12,6 +12,9 @@ import developer_index from "@/components/developer/developer_index";
 import dev_register from "@/components/developer/dev_register";
 import submit_service from "@/components/developer/submit_service";
 import submit_tool from "@/components/developer/submit_tool";
+import TaskMenu from "@/components/administrator/task/TaskMenu";
+import ServiceTable from "@/components/developer/ServiceTable";
+import ToolTable from "@/components/administrator/tool/ToolTable";
 
 Vue.use(VueRouter)
 
@@ -79,7 +82,19 @@ const routes = [
     path:'/adminindex',
     name:'admin_index',
     component: admin_index,
-  }
+  },
+  {
+    path:'/admin_user_task/:id',
+    component:TaskMenu
+  },
+  {
+    path:'/admin_developer_service/:id',
+    component:ServiceTable
+  },
+  {
+    path:'/admin_developer_tool/:developer',
+    component:ToolTable
+  },
 
 ]
 
