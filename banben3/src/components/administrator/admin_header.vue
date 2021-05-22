@@ -35,6 +35,12 @@
         >
           登出
         </i-button>
+        <i-button
+            shape="circle"
+            @click="download_database"
+            class="download_db">
+          下载数据库
+        </i-button>
       </div>
 
       <!--      </template>-->
@@ -77,6 +83,9 @@ export default {
     }
   },
   methods: {
+    download_database(){
+      window.open(this.$server+'/user/downloadSQL',"_blank")
+    },
     handleRoute(name){
       this.myComponent=name
       console.log(7474747474,this.myComponent)
@@ -149,6 +158,12 @@ export default {
   margin-right: 20px;
   margin-left: 20px;
 
+}
+
+.download_db{
+  display:inline-block;
+  margin-right: 20px;
+  margin-left: 20px;
 }
 
 #wel_lout{
